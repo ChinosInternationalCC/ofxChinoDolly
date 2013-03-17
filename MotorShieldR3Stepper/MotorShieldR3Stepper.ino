@@ -1,83 +1,104 @@
+//https://github.com/zevenwolf/Motor-Shield
+
 #include <Stepper.h>
+#include "ChinoDollyComm.h"
 
 #define STEPS 200
-//const int stepsPerRevolution = 200;  // change this to fit the number of steps per revolution
+// change this to fit the number of steps per revolution
   // for your motor
 // Mercury motor 1.8 degrees per step
 
 
-// initialize the stepper library on the motor shield
-Stepper stepper(STEPS, 12,13);    
-
-
-// give the motor control pins names:
+// these are the pins connected to the Arduino Motor Shield:                                    
 const int pwmA = 3;
-const int pwmB = 11;
 const int brakeA = 9;
+const int dirA = 12;
+const int pwmB = 11;
 const int brakeB = 8;
-//const int dirA = 12;
-//const int dirB = 13;
+const int dirB = 13; 
+/*
+  Initialize the stepper library using the direction pins (dirA and dirB) 
+ to control the motor shield. For more details, see the Stepper motor pages, 
+ starting with http://arduino.cc/en/Reference/Stepper
+ */
+Stepper stepper(STEPS, dirA,dirB);  
 
 int x = 0;
 void setup () {
-Serial.begin(9600);
-// set the PWM and brake pins so that the direction pins  // can be used to control the motor:
-pinMode(pwmA, OUTPUT);
-pinMode(pwmB, OUTPUT);
-pinMode(brakeA, OUTPUT);
-pinMode(brakeB, OUTPUT);
-digitalWrite(pwmA, HIGH);
-digitalWrite(pwmB, HIGH);
-digitalWrite(brakeA, LOW);
-digitalWrite(brakeB, LOW);
+  // set up all of the pins of the motor shield as outputs:
+  pinMode(pwmA, OUTPUT);
+  pinMode(brakeA, OUTPUT);
+  pinMode(dirA, OUTPUT);  
+  pinMode(pwmB, OUTPUT);
+  pinMode(brakeB, OUTPUT);
+  pinMode(dirB, OUTPUT);
 
-// initialize the serial port:
-Serial.begin(9600);
-// set the motor speed (for multiple steps only):
-stepper.setSpeed(100);
+  // set the brake pins LOW to turn them off:
+  digitalWrite(brakeA, LOW);
+  digitalWrite(brakeB, LOW);
+  // set the pwm pins HIGH to give maximum power to the motor:
+  digitalWrite(pwmA, HIGH); 
+  digitalWrite(pwmB, HIGH);
+
+  // set the speed at 60 rpm:
+  stepper.setSpeed(60);
+
+  // initialize the serial port:
+  Serial.begin(9600);
 
 } 
 void serialEvent() {
   while (Serial.available()) {
-    // get the new byte:
-    //char inChar = (char)Serial.read(); 
     int revolutions=0;
-    int dir=0;
+    int ReqID=0;
     int NoOfSteps = 0;
-    // add it to the inputString:
-    // if the incoming character is a newline, set a flag
-    // so the main loop can do something about it:
-    //if (inChar == 'f') {
-    //  stepper.step(STEPS);
-    //} 
-    //if (inChar == 'b') {
-    //  stepper.step(-STEPS);
-    //}
-    //val = Serial.parseInt();
+
     if (Serial.available() >= 2)
     {
-        dir = Serial.read();
+        ReqID = Serial.read();
         revolutions = Serial.read();
-        if (dir == 0)
+        if (ReqID == CMD_MOVE_FORWARD)
         {
+          #ifdef VERBOSE
           Serial.println(revolutions);
+          #endif
           for (int i=0;i < abs(revolutions); i++)
             stepper.step(STEPS);
         }
-        else
+        else if (ReqID == CMD_MOVE_BACKWARD)
         { 
+          #ifdef VERBOSE
           Serial.println(revolutions);
+          #endif
           for (int i=0;i < abs(revolutions); i++)
             stepper.step(-STEPS);
+        }
+        if (ReqID == CMD_SHIFT_LEFT)
+        {
+          #ifdef VERBOSE
+          Serial.println(revolutions);
+          #endif
+          for (int i=0;i < abs(revolutions); i++)
+            stepper.step(STEPS);
+        }
+        else if (ReqID == CMD_SHIFT_RIGHT)
+        { 
+          #ifdef VERBOSE
+          Serial.println(revolutions);
+          #endif
+          for (int i=0;i < abs(revolutions); i++)
+            stepper.step(-STEPS);
+        }
+        else if (ReqID == CMD_SET_SPEED)
+        { 
+          #ifdef VERBOSE
+          Serial.println("change speed");
+          #endif
+          stepper.setSpeed(revolutions);
         }
     }
     
   }
 }
 void loop () {
-
-  //myStepper.step(3600);
-  //myStepper.step(-3600);
-
-  //delay(2000);
 }

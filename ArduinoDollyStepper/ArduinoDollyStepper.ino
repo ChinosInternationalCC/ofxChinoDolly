@@ -9,6 +9,7 @@
  */
 
 #include <Stepper.h>
+#include "ChinoDollyComm.h"
 
 // change this to the number of steps on your motor
 #define STEPS 255
@@ -33,55 +34,63 @@ void setup()
   stepper.setSpeed(100);
   Serial.begin(9600);
 }
+
 void serialEvent() {
   while (Serial.available()) {
-    // get the new byte:
-    //char inChar = (char)Serial.read(); 
     int revolutions=0;
-    int dir=0;
+    int ReqID=0;
     int NoOfSteps = 0;
-    // add it to the inputString:
-    // if the incoming character is a newline, set a flag
-    // so the main loop can do something about it:
-    //if (inChar == 'f') {
-    //  stepper.step(STEPS);
-    //} 
-    //if (inChar == 'b') {
-    //  stepper.step(-STEPS);
-    //}
-    //val = Serial.parseInt();
+
     if (Serial.available() >= 2)
     {
-        dir = Serial.read();
+        ReqID = Serial.read();
         revolutions = Serial.read();
-        if (dir == 0)
+        if (ReqID == CMD_MOVE_FORWARD)
         {
+          #ifdef VERBOSE
           Serial.println(revolutions);
+          #endif
           for (int i=0;i < abs(revolutions); i++)
             stepper.step(STEPS);
         }
-        else
+        else if (ReqID == CMD_MOVE_BACKWARD)
         { 
+          #ifdef VERBOSE
           Serial.println(revolutions);
+          #endif
           for (int i=0;i < abs(revolutions); i++)
             stepper.step(-STEPS);
+        }
+        if (ReqID == CMD_SHIFT_LEFT)
+        {
+          #ifdef VERBOSE
+          Serial.println(revolutions);
+          #endif
+          for (int i=0;i < abs(revolutions); i++)
+            stepper.step(STEPS);
+        }
+        else if (ReqID == CMD_SHIFT_RIGHT)
+        { 
+          #ifdef VERBOSE
+          Serial.println(revolutions);
+          #endif
+          for (int i=0;i < abs(revolutions); i++)
+            stepper.step(-STEPS);
+        }
+        else if (ReqID == CMD_SET_SPEED)
+        { 
+          #ifdef VERBOSE
+          Serial.println("change speed");
+          #endif
+          stepper.setSpeed(revolutions);
         }
     }
     
   }
 }
+
 void loop()
 {
-  // get the sensor value
-  //int val = analogRead(0);
 
-  // move a number of steps equal to the change in the
-  // sensor reading
-  //stepper.step(STEPS);
-  //delay(300);
-  //stepper.step(-STEPS);
-  //stepper.step(val - previous);
-  // remember the previous value of the sensor
-  //previous = val;
 }
 
