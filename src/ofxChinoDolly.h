@@ -5,6 +5,7 @@
 
 
 #define ARDUINO_CONNECTED
+#define DEFAULT_SERIAL_COM "\\\\.\\COM12"
 
 class ofxChinoDolly{
 	
@@ -18,10 +19,10 @@ class ofxChinoDolly{
 		void setup();
 		unsigned char MoveDollyForward(unsigned char Revolutions);
 		unsigned char MoveDollyBackward(unsigned char Revolutions);
-		unsigned char TiltUp(unsigned char Revolutions);
-		unsigned char TiltDown(unsigned char Revolutions);
-		unsigned char ShiftLeft(unsigned char Revolutions);
-		unsigned char ShiftRight(unsigned char Revolutions);
+		unsigned char ShiftDollyLeft(unsigned char Revolutions);
+		unsigned char ShiftDollyRight(unsigned char Revolutions);
+		unsigned char TiltDollyUp(unsigned char Revolutions);
+		unsigned char TiltDollyDown(unsigned char Revolutions);
 		unsigned char Calibrate(void);
 		unsigned char SetSpeed(unsigned char Speed);
 
