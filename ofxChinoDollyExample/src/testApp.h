@@ -28,5 +28,5 @@ class testApp : public ofBaseApp{
     void exit(); 
     void guiEvent(ofxUIEventArgs &e);
 	ofxChinoDolly dolly;
-    float PreviousPosSliderVal;
+    float PosPreviousPosSliderVal, TiltPreviousPosSliderVal, ShiftPreviousPosSliderVal;
 };

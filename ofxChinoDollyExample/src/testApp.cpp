@@ -4,15 +4,20 @@
 void testApp::setup()
 {
     gui = new ofxUICanvas(0,0,320,320);
-    gui->addWidgetDown(new ofxUILabel("Chino Dolly", OFX_UI_FONT_LARGE)); 
-    gui->addSlider("Carito Position",5,40,100,304,16);
+    gui->addWidgetDown(new ofxUILabel("Manual Control", OFX_UI_FONT_LARGE)); 
+	gui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
+    gui->addWidgetRight(new ofxUIToggle(32, 32, false, "Calibrate"));
+	gui->addSlider("Carito Position",5,40,100,304,16);
 	gui->addWidgetDown(new ofxUIButton(32, 32, false, "Backward"));
-	gui->addWidgetDown(new ofxUIButton(32, 32, false, "Forward"));
+	gui->addWidgetRight(new ofxUIButton(32, 32, false, "Forward"));
+	gui->addSlider("Shift",5,40,100,304,16);
     gui->addWidgetDown(new ofxUIButton(32, 32, false, "ShiftLeft"));
-	gui->addWidgetDown(new ofxUIButton(32, 32, false, "ShiftRight"));
+	gui->addWidgetRight(new ofxUIButton(32, 32, false, "ShiftRight"));	
+	gui->addSlider("Tilt",5,40,100,304,16);
 	gui->addWidgetDown(new ofxUIButton(32, 32, false, "TiltUp"));
-	gui->addWidgetDown(new ofxUIButton(32, 32, false, "TiltDown"));
-    gui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
+	gui->addWidgetRight(new ofxUIButton(32, 32, false, "TiltDown"));
+	gui->addNumberDialer("Speed",0.0,255.0,0.0,1.0);
+    
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent); 
     gui->loadSettings("GUI/guiSettings.xml"); 
 
@@ -46,18 +51,18 @@ void testApp::guiEvent(ofxUIEventArgs &e)
         //ofBackground(slider->getScaledValue());
 		CurrentPosSliderVal = slider->getScaledValue();
 		
-		if ((unsigned char)CurrentPosSliderVal != (unsigned char)PreviousPosSliderVal)
+		if ((unsigned char)CurrentPosSliderVal != (unsigned char)PosPreviousPosSliderVal)
 		{  
-			if (PreviousPosSliderVal > CurrentPosSliderVal)
+			if (PosPreviousPosSliderVal > CurrentPosSliderVal)
 			{
-				Rev = (unsigned char) (PreviousPosSliderVal-CurrentPosSliderVal);
+				Rev = (unsigned char) (PosPreviousPosSliderVal-CurrentPosSliderVal);
 				cout << Rev << '\n';
-			    cout << (PreviousPosSliderVal-CurrentPosSliderVal); 
+			    cout << (PosPreviousPosSliderVal-CurrentPosSliderVal); 
 				dolly.MoveDollyForward(Rev);
 			}
 			else
 			{
-				Rev = (unsigned char) (CurrentPosSliderVal-PreviousPosSliderVal);
+				Rev = (unsigned char) (CurrentPosSliderVal-PosPreviousPosSliderVal);
 				cout <<'-' <<Rev << '\n';			
 				
 				dolly.MoveDollyBackward(Rev);
@@ -65,7 +70,7 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 			}
 		
 			//save the current Slider Position
-			PreviousPosSliderVal = CurrentPosSliderVal;
+			PosPreviousPosSliderVal = CurrentPosSliderVal;
 		}
 
     }
@@ -98,6 +103,74 @@ void testApp::guiEvent(ofxUIEventArgs &e)
     {
 		dolly.TiltDollyDown(1);
     }
+	else if(e.widget->getName() == "Tilt")
+    {
+        ofxUISlider *slider = (ofxUISlider *) e.widget;    
+        //ofBackground(slider->getScaledValue());
+		CurrentPosSliderVal = slider->getScaledValue();
+		
+		if ((unsigned char)CurrentPosSliderVal != (unsigned char)TiltPreviousPosSliderVal)
+		{  
+			if (TiltPreviousPosSliderVal > CurrentPosSliderVal)
+			{   
+				Rev = (unsigned char) (TiltPreviousPosSliderVal-CurrentPosSliderVal);
+				cout << Rev << '\n';
+			    cout << (TiltPreviousPosSliderVal-CurrentPosSliderVal); 
+				dolly.TiltDollyDown(Rev);
+			}
+			else
+			{
+				Rev = (unsigned char) (CurrentPosSliderVal-TiltPreviousPosSliderVal);
+				cout <<'-' <<Rev << '\n';			
+				
+				dolly.TiltDollyUp(Rev);
+
+			}
+		
+			//save the current Slider Position
+			TiltPreviousPosSliderVal = CurrentPosSliderVal;
+		}
+
+    }
+	else if(e.widget->getName() == "Shift")
+    {
+        ofxUISlider *slider = (ofxUISlider *) e.widget;    
+        //ofBackground(slider->getScaledValue());
+		CurrentPosSliderVal = slider->getScaledValue();
+		
+		if ((unsigned char)CurrentPosSliderVal != (unsigned char)ShiftPreviousPosSliderVal)
+		{  
+			if (ShiftPreviousPosSliderVal > CurrentPosSliderVal)
+			{   
+				Rev = (unsigned char) (ShiftPreviousPosSliderVal-CurrentPosSliderVal);
+				cout << Rev << '\n';
+			    cout << (ShiftPreviousPosSliderVal-CurrentPosSliderVal); 
+				dolly.ShiftDollyLeft(Rev);
+			}
+			else
+			{
+				Rev = (unsigned char) (CurrentPosSliderVal-ShiftPreviousPosSliderVal);
+				cout <<'-' <<Rev << '\n';			
+				
+				dolly.ShiftDollyRight(Rev);
+
+			}
+		
+			//save the current Slider Position
+			ShiftPreviousPosSliderVal = CurrentPosSliderVal;
+		}
+
+    }
+	else if(e.widget->getName() == "Calibrate")
+	{
+		dolly.Calibrate();
+
+	}
+	else if(e.widget->getName() == "Speed")
+	{
+		ofxUINumberDialer *dialer = (ofxUINumberDialer *) e.widget;
+		dolly.SetSpeed((unsigned char)dialer->getValue());
+	}
 }
 //--------------------------------------------------------------
 void testApp::keyPressed(int key)
