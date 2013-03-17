@@ -37,8 +37,8 @@ void setup () {
   digitalWrite(brakeA, LOW);
   digitalWrite(brakeB, LOW);
   // set the pwm pins HIGH to give maximum power to the motor:
-  digitalWrite(pwmA, HIGH); 
-  digitalWrite(pwmB, HIGH);
+  //digitalWrite(pwmA, HIGH); 
+  //digitalWrite(pwmB, HIGH);
 
   // set the speed at 60 rpm:
   stepper.setSpeed(60);
@@ -63,7 +63,13 @@ void serialEvent() {
           Serial.println(revolutions);
           #endif
           for (int i=0;i < abs(revolutions); i++)
+          {
+            digitalWrite(pwmA, HIGH); 
+            digitalWrite(pwmB, HIGH);
             stepper.step(STEPS);
+            digitalWrite(pwmA, LOW); 
+            digitalWrite(pwmB, LOW);
+          }
         }
         else if (ReqID == CMD_MOVE_BACKWARD)
         { 
@@ -71,7 +77,13 @@ void serialEvent() {
           Serial.println(revolutions);
           #endif
           for (int i=0;i < abs(revolutions); i++)
+          {
+            digitalWrite(pwmA, HIGH); 
+            digitalWrite(pwmB, HIGH);
             stepper.step(-STEPS);
+            digitalWrite(pwmA, LOW); 
+            digitalWrite(pwmB, LOW);
+          }
         }
         if (ReqID == CMD_SHIFT_LEFT)
         {
@@ -79,7 +91,13 @@ void serialEvent() {
           Serial.println(revolutions);
           #endif
           for (int i=0;i < abs(revolutions); i++)
+          {
+            digitalWrite(pwmA, HIGH); 
+            digitalWrite(pwmB, HIGH);
             stepper.step(STEPS);
+            digitalWrite(pwmA, LOW); 
+            digitalWrite(pwmB, LOW);
+          }
         }
         else if (ReqID == CMD_SHIFT_RIGHT)
         { 
@@ -87,7 +105,13 @@ void serialEvent() {
           Serial.println(revolutions);
           #endif
           for (int i=0;i < abs(revolutions); i++)
+          {            
+            digitalWrite(pwmA, HIGH); 
+            digitalWrite(pwmB, HIGH);
             stepper.step(-STEPS);
+            digitalWrite(pwmA, LOW); 
+            digitalWrite(pwmB, LOW);
+          }
         }
         else if (ReqID == CMD_SET_SPEED)
         { 

@@ -5,17 +5,18 @@ void testApp::setup()
 {
     gui = new ofxUICanvas(0,0,320,320);
     gui->addWidgetDown(new ofxUILabel("Manual Control", OFX_UI_FONT_LARGE)); 
-	gui->addWidgetDown(new ofxUIToggle(32, 32, false, "FULLSCREEN"));
-    gui->addWidgetRight(new ofxUIToggle(32, 32, false, "Calibrate"));
+	gui->addWidgetDown(new ofxUIToggle(16, 16, false, "FULLSCREEN"));
+    gui->addWidgetRight(new ofxUIToggle(16, 16, false, "Calibrate"));
 	gui->addSlider("Carito Position",5,40,100,304,16);
-	gui->addWidgetDown(new ofxUIButton(32, 32, false, "Backward"));
-	gui->addWidgetRight(new ofxUIButton(32, 32, false, "Forward"));
+	gui->addWidgetDown(new ofxUIButton(16, 16, false, "Backward"));
+	gui->addWidgetRight(new ofxUIButton(16, 16, false, "Forward"));
 	gui->addSlider("Shift",5,40,100,304,16);
-    gui->addWidgetDown(new ofxUIButton(32, 32, false, "ShiftLeft"));
-	gui->addWidgetRight(new ofxUIButton(32, 32, false, "ShiftRight"));	
+    gui->addWidgetDown(new ofxUIButton(16, 16, false, "ShiftLeft"));
+	gui->addWidgetRight(new ofxUIButton(16, 16, false, "ShiftRight"));	
 	gui->addSlider("Tilt",5,40,100,304,16);
-	gui->addWidgetDown(new ofxUIButton(32, 32, false, "TiltUp"));
-	gui->addWidgetRight(new ofxUIButton(32, 32, false, "TiltDown"));
+	gui->addWidgetDown(new ofxUIButton(16, 16, false, "TiltUp"));
+	gui->addWidgetRight(new ofxUIButton(16, 16, false, "TiltDown"));
+	gui->addWidgetDown(new ofxUILabel("Speed", OFX_UI_FONT_MEDIUM)); 
 	gui->addNumberDialer("Speed",0.0,255.0,0.0,1.0);
     
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent); 
@@ -191,16 +192,16 @@ void testApp::keyPressed(int key)
 			break;
 
 		case 'l':
-			dolly.MoveDollyForward(1);
+			dolly.ShiftDollyLeft(1);
 			break;
 		case 'r':
-			dolly.MoveDollyBackward(1);
+			dolly.ShiftDollyRight(1);
 			break;
 		case 'u':
-			dolly.MoveDollyForward(1);
+			dolly.TiltDollyUp(1);
 			break;
 		case 'd':
-			dolly.MoveDollyBackward(1);
+			dolly.TiltDollyDown(1);
 			break;
 	
 	 
