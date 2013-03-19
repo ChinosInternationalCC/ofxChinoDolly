@@ -3,6 +3,7 @@
 //--------------------------------------------------------------
 void testApp::setup()
 {
+	dolly.setup();
     gui = new ofxUICanvas(0,0,320,320);
     gui->addWidgetDown(new ofxUILabel("Manual Control", OFX_UI_FONT_LARGE)); 
 	gui->addWidgetDown(new ofxUIToggle(16, 16, false, "FULLSCREEN"));
@@ -22,7 +23,7 @@ void testApp::setup()
     ofAddListener(gui->newGUIEvent, this, &testApp::guiEvent); 
     gui->loadSettings("GUI/guiSettings.xml"); 
 
-	dolly.setup();
+	
 }
 
 //--------------------------------------------------------------
@@ -59,14 +60,14 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 				Rev = (unsigned char) (PosPreviousPosSliderVal-CurrentPosSliderVal);
 				cout << Rev << '\n';
 			    cout << (PosPreviousPosSliderVal-CurrentPosSliderVal); 
-				dolly.MoveDollyForward(Rev);
+				//dolly.MoveDollyForward(Rev);
 			}
-			else
+			else if (PosPreviousPosSliderVal < CurrentPosSliderVal)
 			{
 				Rev = (unsigned char) (CurrentPosSliderVal-PosPreviousPosSliderVal);
 				cout <<'-' <<Rev << '\n';			
 				
-				dolly.MoveDollyBackward(Rev);
+				//dolly.MoveDollyBackward(Rev);
 
 			}
 		
@@ -146,14 +147,14 @@ void testApp::guiEvent(ofxUIEventArgs &e)
 				Rev = (unsigned char) (ShiftPreviousPosSliderVal-CurrentPosSliderVal);
 				cout << Rev << '\n';
 			    cout << (ShiftPreviousPosSliderVal-CurrentPosSliderVal); 
-				dolly.ShiftDollyLeft(Rev);
+				//dolly.ShiftDollyLeft(Rev);
 			}
 			else
 			{
 				Rev = (unsigned char) (CurrentPosSliderVal-ShiftPreviousPosSliderVal);
 				cout <<'-' <<Rev << '\n';			
 				
-				dolly.ShiftDollyRight(Rev);
+				//dolly.ShiftDollyRight(Rev);
 
 			}
 		

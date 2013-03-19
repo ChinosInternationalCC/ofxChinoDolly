@@ -6,6 +6,7 @@
 
 #define ARDUINO_CONNECTED
 #define DEFAULT_SERIAL_COM "\\\\.\\COM12"
+//#define DEFAULT_SERIAL_COM "COM12"
 
 class ofxChinoDolly{
 	
@@ -25,6 +26,7 @@ class ofxChinoDolly{
 		unsigned char TiltDollyDown(unsigned char Revolutions);
 		unsigned char Calibrate(void);
 		unsigned char SetSpeed(unsigned char Speed);
+		//void waitConfirmation(void);
 
 	private:
 		ofSerial	serial;

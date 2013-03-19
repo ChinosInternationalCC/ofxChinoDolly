@@ -11,6 +11,12 @@ ofxChinoDolly::~ofxChinoDolly()
 	
 }
 
+/*void ofxChinoDolly::waitConfirmation(){
+
+	while(1!= serial.readByte());
+	
+}*/
+
 void ofxChinoDolly::setup()
 {
 	#ifdef ARDUINO_CONNECTED
@@ -30,6 +36,7 @@ unsigned char ofxChinoDolly::MoveDollyForward(unsigned char Revolutions)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_MOVE_FORWARD);
 	ofxChinoDolly::serial.writeByte(Revolutions);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -39,6 +46,7 @@ unsigned char ofxChinoDolly::MoveDollyBackward(unsigned char Revolutions)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_MOVE_BACKWARD);
 	ofxChinoDolly::serial.writeByte(Revolutions);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -48,6 +56,7 @@ unsigned char ofxChinoDolly::ShiftDollyLeft(unsigned char Revolutions)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_SHIFT_LEFT);
 	ofxChinoDolly::serial.writeByte(Revolutions);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -57,6 +66,7 @@ unsigned char ofxChinoDolly::ShiftDollyRight(unsigned char Revolutions)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_SHIFT_RIGHT);
 	ofxChinoDolly::serial.writeByte(Revolutions);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -66,6 +76,7 @@ unsigned char ofxChinoDolly::TiltDollyUp(unsigned char Revolutions)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_TILT_UP);
 	ofxChinoDolly::serial.writeByte(Revolutions);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -75,6 +86,7 @@ unsigned char ofxChinoDolly::TiltDollyDown(unsigned char Revolutions)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_TILT_DOWN);
 	ofxChinoDolly::serial.writeByte(Revolutions);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -84,6 +96,7 @@ unsigned char ofxChinoDolly::SetSpeed(unsigned char Speed)
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_SET_SPEED);
 	ofxChinoDolly::serial.writeByte(Speed);
+	while(1!= serial.readByte());
 	#endif
 	return 0;
 }
@@ -92,6 +105,7 @@ unsigned char ofxChinoDolly::Calibrate(void){
 	#ifdef ARDUINO_CONNECTED
 	ofxChinoDolly::serial.writeByte(CMD_CALIBRATE);
 	ofxChinoDolly::serial.writeByte(0);
+	while(1!= serial.readByte());
 	#endif
 
 	return 0;

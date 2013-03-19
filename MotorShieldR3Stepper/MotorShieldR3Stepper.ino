@@ -78,48 +78,52 @@ void serialEvent() {
           #ifdef VERBOSE
           Serial.println(revolutions);
           #endif
-          for (int i=0;i < abs(revolutions); i++)
-          {
-            stepper1.step(STEPS1);
-           }
+          //for (int i=0;i < abs(revolutions); i++)
+          //{
+            stepper1.step(revolutions);
+           //}
+           Serial.write(1);
         }
         else if (ReqID == CMD_MOVE_BACKWARD)
         { 
           #ifdef VERBOSE
           Serial.println(revolutions);
           #endif
-          for (int i=0;i < abs(revolutions); i++)
-          {
-            stepper1.step(-STEPS1);
-          }
+          //for (int i=0;i < abs(revolutions); i++)
+          //{
+            stepper1.step(-revolutions);
+          //}
+          Serial.write(1);
         }
         if (ReqID == CMD_SHIFT_LEFT)
         {
           #ifdef VERBOSE
           Serial.println(revolutions);
           #endif
-          for (int i=0;i < abs(revolutions); i++)
-          {
+          //for (int i=0;i < abs(revolutions); i++)
+          //{
             digitalWrite(pwmA, HIGH); 
             digitalWrite(pwmB, HIGH);
-            stepper.step(STEPS);
+            stepper.step(revolutions);
             digitalWrite(pwmA, LOW); 
             digitalWrite(pwmB, LOW);
-          }
+          //}
+          Serial.write(1);
         }
         else if (ReqID == CMD_SHIFT_RIGHT)
         { 
           #ifdef VERBOSE
           Serial.println(revolutions);
           #endif
-          for (int i=0;i < abs(revolutions); i++)
-          {            
+          //for (int i=0;i < abs(revolutions); i++)
+          //{            
             digitalWrite(pwmA, HIGH); 
             digitalWrite(pwmB, HIGH);
-            stepper.step(-STEPS);
+            stepper.step(-revolutions);
             digitalWrite(pwmA, LOW); 
             digitalWrite(pwmB, LOW);
-          }
+          //}
+          Serial.write(1);
         }
         else if (ReqID == CMD_SET_SPEED)
         { 
@@ -127,6 +131,7 @@ void serialEvent() {
           Serial.println("change speed");
           #endif
           stepper.setSpeed(revolutions);
+          Serial.write(1);
         }
         else if (ReqID == CMD_TILT_UP)
         { 
@@ -135,6 +140,7 @@ void serialEvent() {
                 myservo.write(pos);              // tell servo to go to position in variable 'pos' 
                   delay(15);                       // waits 15ms for the servo to reach the position 
           } 
+          Serial.write(1);
         }
         else if (ReqID == CMD_TILT_DOWN)
         { 
@@ -143,6 +149,7 @@ void serialEvent() {
             myservo.write(pos);              // tell servo to go to position in variable 'pos' 
               delay(15);                       // waits 15ms for the servo to reach the position 
           } 
+          Serial.write(1);
         }
     }
     
